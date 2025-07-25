@@ -3,6 +3,7 @@ import { getAllPageSlugs, getPageContentBySlug } from "@/lib/pages";
 import Image from "next/image";
 import { PostBody } from "@/components/post-body";
 import { Heading } from "@/components/heading";
+import { notFound } from "next/navigation";
 
 type AppPageParams = {
   slug: string;
@@ -14,6 +15,10 @@ export async function generateStaticParams() {
 
 export default async function AppPage({ params }: { params: AppPageParams }) {
   const page = getPageContentBySlug("apps", params.slug);
+
+  if (!page) {
+    return notFound();
+  }
 
   return (
     <PageLayout className="prose dark:prose-invert" tag="article">
